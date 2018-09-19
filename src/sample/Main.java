@@ -8,11 +8,13 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setTitle("Scrabble!");
+        primaryStage.setScene(new Scene(root, 16*Board.SQUARE_SIZE, 18*Board.SQUARE_SIZE));
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
