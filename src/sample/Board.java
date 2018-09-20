@@ -10,8 +10,9 @@ public class Board{
 
     private Map<Character, Integer> letters = new HashMap<>();
     private char[] letterDistribution = "AAAAAAAAABBCCDDDDEEEEEEEEEEEEFFGGGHHIIIIIIIIIJKLLLLMMNNNNNNOOOOOOOOPPQRRRRRRSSSSTTTTTTUUUUVVWWXYYZ".toCharArray();
-    private ArrayList<Tile> row = new ArrayList<>();
+    private List<Tile> row = new ArrayList<>();
     private Square[][] grid = new Square[X_TILES][Y_TILES];
+    private List<String> words = new ArrayList<>();
 
     public Board(){
         //Sets the points of each letter
@@ -44,15 +45,63 @@ public class Board{
     public void setNeighborsAsPlayable(){
         for(int col = 0; col < Y_TILES; col++){
             for(int row = 0; row < X_TILES; row++){
-                if(grid[col][row].getTile() != null){
-                    grid[col-1][row].setPlayable(true);
-                    grid[col+1][row].setPlayable(true);
-                    grid[col][row-1].setPlayable(true);
-                    grid[col][row+1].setPlayable(true);
+                if(grid[col][row].getTile() != null){ //If square has tile
+                    if(grid[col][row-1].getTile() == null && grid[col][row+1].getTile() == null){
+                        grid[col-1][row].setPlayable(true);
+                        grid[col+1][row].setPlayable(true);
+                    }
+                    if(grid[col-1][row].getTile() == null && grid[col+1][row].getTile() == null){
+                        grid[col][row-1].setPlayable(true);
+                        grid[col][row+1].setPlayable(true);
+                    }
                 }
             }
         }
     }
+
+    public void findWords(){
+        String word = "";
+        boolean activeTile = false;
+        //Finds horizontal words
+        for(int col = 0; col < Y_TILES; col++){
+            for(int row = 0; row < X_TILES; row++){
+                Tile tile = grid[col][row].getTile();
+                if(tile != null) { //If square has tile
+                    word += tile.getLetter();
+                    if(tile.isMovable()){ //Tile has been played this round
+                       activeTile = true;
+                    }
+                }else{
+                    if(activeTile && word.length() > 1){
+                        words.add(word);
+                        activeTile = false;
+                        System.out.println(word);
+                    }
+                    word = "";
+                }
+            }
+        }
+        //Finds vertical words
+        for(int row = 0; row < X_TILES; row++){
+            for(int col = 0; col < Y_TILES; col++){
+                Tile tile = grid[col][row].getTile();
+                if(tile != null) { //If square has tile
+                    word += tile.getLetter();
+                    if(tile.isMovable()){ //Tile has been played this round
+                        activeTile = true;
+                    }
+                }else{
+                    if(activeTile && word.length() > 1){
+                        words.add(word);
+                        activeTile = false;
+                        System.out.println(word);
+                    }
+                    word = "";
+                }
+            }
+        }
+    }
+
 
     //Sets all tiles currently on grid as not movable
     public void lockTiles(){
@@ -78,7 +127,7 @@ public class Board{
         return grid;
     }
 
-    public ArrayList<Tile> getRow() {
+    public List<Tile> getRow() {
         return row;
     }
 

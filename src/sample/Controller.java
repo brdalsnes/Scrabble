@@ -69,6 +69,7 @@ public class Controller {
     public void handlePlayClick(){
         board.fillRow();
         setRowView();
+        board.findWords();
         board.lockTiles();
     }
 

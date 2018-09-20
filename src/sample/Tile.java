@@ -52,6 +52,10 @@ public class Tile extends BorderPane {
         this.movable = movable;
     }
 
+    public boolean isMovable() {
+        return movable;
+    }
+
     public char getLetter() {
         return letter;
     }
